@@ -139,32 +139,40 @@ button, input {
 /* ──────────────────────────────────────
    5. LOGIN SECTION
 ────────────────────────────────────── */
+/* ──────────────────────────────────────
+   5. LOGIN SECTION
+────────────────────────────────────── */
 .login {
     flex: 1;
-    display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 24px;
+    justify-content: center;
+    gap: 48px;
     padding: 60px var(--pad-side);
     min-height: 600px;
+    text-align: center;
 }
 
-/* Left column */
+/* Logo */
 .login__visual {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
 }
 
 .login__logo {
-    width: min(1280px, 100%);
+    width: min(420px, 90%);
     height: auto;
     animation: fadeIn 0.9s ease both;
 }
 
-/* Right column */
+/* Form wrap */
 .login__form-wrap {
-    max-width: 400px;
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
     animation: slideUp 0.65s ease both 0.1s;
 }
 
@@ -567,9 +575,7 @@ button, input {
     }
 
     .login {
-        grid-template-columns: 1fr;
-        padding: 52px var(--pad-side);
-        text-align: center;
+        padding: 40px var(--pad-side);
     }
 
     .login__form-wrap {
