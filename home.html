@@ -1,0 +1,384 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Garage J57 — Bike Spare Parts</title>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="home.css" />
+</head>
+<body>
+
+    <!-- ══════════════════════════════════
+         NAV
+    ══════════════════════════════════ -->
+    <nav class="nav">
+        <a href="home.html" class="nav__logo">
+            <img src="GARAGE_57.jpg" alt="Garage J57"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='block'" />
+            <span class="nav__logo-fallback">GARAGE J57</span>
+        </a>
+        <ul class="nav__links">
+            <li><a href="home.html" class="active">Home</a></li>
+            <li><a href="#products">Shop</a></li>
+            <li><a href="#features">About</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+        <div class="nav__actions">
+            <a href="#" class="nav__icon" title="Search">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>
+            </a>
+            <a href="#" class="nav__icon" title="Wishlist">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" /></svg>
+            </a>
+            <a href="#" class="nav__cart" title="Cart">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" /><line x1="3" y1="6" x2="21" y2="6" /><path d="M16 10a4 4 0 0 1-8 0" /></svg>
+                <span class="nav__cart-count">0</span>
+            </a>
+            <a href="index.html" class="nav__login">Log In</a>
+        </div>
+    </nav>
+
+    <!-- ══════════════════════════════════
+         HERO
+    ══════════════════════════════════ -->
+    <section class="hero">
+        <div class="hero__bg-text">GARAGE J57</div>
+        <div class="hero__content">
+            <div class="hero__tag">New Arrivals 2024</div>
+            <h1 class="hero__heading">
+                Premium Bike<br />
+                <span class="hero__heading--red">Spare Parts</span>
+            </h1>
+            <p class="hero__sub">Genuine & aftermarket parts for all bike models.<br />Quality you can trust, prices you'll love.</p>
+            <div class="hero__actions">
+                <a href="#products" class="btn-primary">Shop Now</a>
+                <a href="#categories" class="btn-outline">Browse Categories</a>
+            </div>
+            <div class="hero__stats">
+                <div class="hero__stat">
+                    <span class="hero__stat-num">5000+</span>
+                    <span class="hero__stat-label">Parts Available</span>
+                </div>
+                <div class="hero__stat-divider"></div>
+                <div class="hero__stat">
+                    <span class="hero__stat-num">10K+</span>
+                    <span class="hero__stat-label">Happy Customers</span>
+                </div>
+                <div class="hero__stat-divider"></div>
+                <div class="hero__stat">
+                    <span class="hero__stat-num">100%</span>
+                    <span class="hero__stat-label">Genuine Parts</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero__visual">
+            <div class="hero__gear hero__gear--1">⚙</div>
+            <div class="hero__gear hero__gear--2">⚙</div>
+            <div class="hero__img-wrap">
+                <img src="GARAGE_57.jpg" alt="Garage J57" class="hero__logo-img" />
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         ANNOUNCEMENT STRIP
+    ══════════════════════════════════ -->
+    <div class="strip">
+        <div class="strip__track">
+            <span>🚚 Free Delivery above ₹999</span>
+            <span class="strip__dot">●</span>
+            <span>🔧 100% Genuine Parts</span>
+            <span class="strip__dot">●</span>
+            <span>🔄 Easy 7-Day Returns</span>
+            <span class="strip__dot">●</span>
+            <span>⚡ Same Day Dispatch</span>
+            <span class="strip__dot">●</span>
+            <span>🚚 Free Delivery above ₹999</span>
+            <span class="strip__dot">●</span>
+            <span>🔧 100% Genuine Parts</span>
+            <span class="strip__dot">●</span>
+            <span>🔄 Easy 7-Day Returns</span>
+            <span class="strip__dot">●</span>
+            <span>⚡ Same Day Dispatch</span>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         CATEGORIES
+    ══════════════════════════════════ -->
+    <section class="section" id="categories">
+        <div class="section__header">
+            <div class="section__tag">Browse By</div>
+            <h2 class="section__title">Categories</h2>
+        </div>
+        <div class="categories">
+
+            <div class="cat-card">
+                <div class="cat-card__icon">🔩</div>
+                <h3 class="cat-card__name">Engine Parts</h3>
+                <p class="cat-card__count">320+ items</p>
+            </div>
+
+            <div class="cat-card">
+                <div class="cat-card__icon">🛞</div>
+                <h3 class="cat-card__name">Wheels & Tyres</h3>
+                <p class="cat-card__count">150+ items</p>
+            </div>
+
+            <div class="cat-card">
+                <div class="cat-card__icon">🛑</div>
+                <h3 class="cat-card__name">Brakes</h3>
+                <p class="cat-card__count">210+ items</p>
+            </div>
+
+            <div class="cat-card">
+                <div class="cat-card__icon">💡</div>
+                <h3 class="cat-card__name">Electricals</h3>
+                <p class="cat-card__count">180+ items</p>
+            </div>
+
+            <div class="cat-card">
+                <div class="cat-card__icon">🪛</div>
+                <h3 class="cat-card__name">Body Parts</h3>
+                <p class="cat-card__count">240+ items</p>
+            </div>
+
+            <div class="cat-card">
+                <div class="cat-card__icon">🔋</div>
+                <h3 class="cat-card__name">Battery</h3>
+                <p class="cat-card__count">90+ items</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         FEATURED PRODUCTS
+    ══════════════════════════════════ -->
+    <section class="section section--gray" id="products">
+        <div class="section__header">
+            <div class="section__tag">This Month</div>
+            <h2 class="section__title">Best Selling Parts</h2>
+        </div>
+        <div class="products">
+
+            <div class="product-card">
+                <div class="product-card__badge">Best Seller</div>
+                <div class="product-card__img">
+                    <div class="product-card__placeholder">🔩</div>
+                </div>
+                <div class="product-card__body">
+                    <p class="product-card__brand">Honda</p>
+                    <h3 class="product-card__name">Piston Kit — CB Shine</h3>
+                    <div class="product-card__rating">
+                        ★★★★★ <span>(128)</span>
+                    </div>
+                    <div class="product-card__price">
+                        <span class="product-card__price--new">₹1,299</span>
+                        <span class="product-card__price--old">₹1,799</span>
+                    </div>
+                    <button class="btn-cart">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-card__badge product-card__badge--new">New</div>
+                <div class="product-card__img">
+                    <div class="product-card__placeholder">🛑</div>
+                </div>
+                <div class="product-card__body">
+                    <p class="product-card__brand">Bajaj</p>
+                    <h3 class="product-card__name">Disc Brake Pad Set</h3>
+                    <div class="product-card__rating">
+                        ★★★★☆ <span>(94)</span>
+                    </div>
+                    <div class="product-card__price">
+                        <span class="product-card__price--new">₹649</span>
+                        <span class="product-card__price--old">₹899</span>
+                    </div>
+                    <button class="btn-cart">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-card__img">
+                    <div class="product-card__placeholder">💡</div>
+                </div>
+                <div class="product-card__body">
+                    <p class="product-card__brand">TVS</p>
+                    <h3 class="product-card__name">Headlight Assembly LED</h3>
+                    <div class="product-card__rating">
+                        ★★★★★ <span>(67)</span>
+                    </div>
+                    <div class="product-card__price">
+                        <span class="product-card__price--new">₹2,199</span>
+                        <span class="product-card__price--old">₹2,999</span>
+                    </div>
+                    <button class="btn-cart">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-card__badge product-card__badge--sale">-30%</div>
+                <div class="product-card__img">
+                    <div class="product-card__placeholder">🔋</div>
+                </div>
+                <div class="product-card__body">
+                    <p class="product-card__brand">Exide</p>
+                    <h3 class="product-card__name">Bike Battery 12V 5Ah</h3>
+                    <div class="product-card__rating">
+                        ★★★★☆ <span>(203)</span>
+                    </div>
+                    <div class="product-card__price">
+                        <span class="product-card__price--new">₹1,849</span>
+                        <span class="product-card__price--old">₹2,649</span>
+                    </div>
+                    <button class="btn-cart">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-card__img">
+                    <div class="product-card__placeholder">🛞</div>
+                </div>
+                <div class="product-card__body">
+                    <p class="product-card__brand">MRF</p>
+                    <h3 class="product-card__name">Rear Tyre 100/90-17</h3>
+                    <div class="product-card__rating">
+                        ★★★★★ <span>(311)</span>
+                    </div>
+                    <div class="product-card__price">
+                        <span class="product-card__price--new">₹3,299</span>
+                        <span class="product-card__price--old">₹3,899</span>
+                    </div>
+                    <button class="btn-cart">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-card__badge">Popular</div>
+                <div class="product-card__img">
+                    <div class="product-card__placeholder">🪛</div>
+                </div>
+                <div class="product-card__body">
+                    <p class="product-card__brand">Royal Enfield</p>
+                    <h3 class="product-card__name">Side Panel — Bullet 350</h3>
+                    <div class="product-card__rating">
+                        ★★★★☆ <span>(56)</span>
+                    </div>
+                    <div class="product-card__price">
+                        <span class="product-card__price--new">₹1,099</span>
+                        <span class="product-card__price--old">₹1,499</span>
+                    </div>
+                    <button class="btn-cart">Add to Cart</button>
+                </div>
+            </div>
+
+        </div>
+        <div class="section__cta">
+            <a href="#" class="btn-primary">View All Products</a>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         PROMO BANNER
+    ══════════════════════════════════ -->
+    <section class="promo">
+        <div class="promo__content">
+            <div class="promo__tag">Limited Time</div>
+            <h2 class="promo__title">Up to 40% Off<br />Engine Parts</h2>
+            <p class="promo__sub">Use code <strong>GARAGE40</strong> at checkout</p>
+            <a href="#" class="btn-white">Shop the Deal</a>
+        </div>
+        <div class="promo__gear">⚙</div>
+        <div class="promo__gear promo__gear--2">⚙</div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         WHY CHOOSE US
+    ══════════════════════════════════ -->
+    <section class="section" id="features">
+        <h2 class="section__title">Why Choose Garage J57</h2>
+        </div>
+        <div class="features">
+
+            <div class="feature">
+                <div class="feature__icon">🚚</div>
+                <h3 class="feature__title">Fast Delivery</h3>
+                <p class="feature__desc">Same-day dispatch on orders before 2 PM. Pan-India delivery in 2–5 days.</p>
+            </div>
+
+            <div class="feature">
+                <div class="feature__icon">✅</div>
+                <h3 class="feature__title">100% Genuine</h3>
+                <p class="feature__desc">Every part sourced directly from authorized distributors and OEM suppliers.</p>
+            </div>
+
+            <div class="feature">
+                <div class="feature__icon">🔄</div>
+                <h3 class="feature__title">Easy Returns</h3>
+                <p class="feature__desc">7-day hassle-free return policy. No questions asked.</p>
+            </div>
+
+            <div class="feature">
+                <div class="feature__icon">💬</div>
+                <h3 class="feature__title">Expert Support</h3>
+                <p class="feature__desc">Our mechanics are available 9 AM–9 PM to help you find the right part.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         FOOTER
+    ══════════════════════════════════ -->
+    <footer class="footer">
+        <div class="footer__grid">
+
+            <div class="footer__col">
+                <img class="footer__brand-logo" src="GARAGE_57.jpg" alt="Garage J57"
+                     onerror="this.style.display='none'" />
+                <p class="footer__subscribe-label">Subscribe</p>
+                <p class="footer__subscribe-desc">Get 10% off your first order</p>
+                <div class="subscribe-form">
+                    <input type="email" placeholder="Enter your email" />
+                    <button type="button">&#x2192;</button>
+                </div>
+            </div>
+
+            <div class="footer__col">
+                <h3 class="footer__col-title">Account</h3>
+                <ul class="footer__links">
+                    <li><a href="#">My Account</a></li>
+                    <li><a href="index.html">Login / Register</a></li>
+                    <li><a href="#">Cart</a></li>
+                    <li><a href="#">Wishlist</a></li>
+                    <li><a href="#">Shop</a></li>
+                </ul>
+            </div>
+
+            <div class="footer__col">
+                <h3 class="footer__col-title">Quick Link</h3>
+                <ul class="footer__links">
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms Of Use</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer__col">
+                <h3 class="footer__col-title">Location</h3>
+                <div class="footer__map">Map</div>
+            </div>
+
+        </div>
+        <div class="footer__bottom">
+            &copy; Copyright Garage J57 2024. All rights reserved
+        </div>
+    </footer>
+
+    <script src="home.js"></script>
+</body>
+</html>
