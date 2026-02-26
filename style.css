@@ -156,7 +156,7 @@ button, input {
 }
 
 .login__logo {
-    width: min(460px, 100%);
+    width: min(600px, 100%);
     animation: fadeIn 0.9s ease both;
 }
 
