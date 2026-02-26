@@ -47,9 +47,3 @@ document.querySelectorAll('.cat-card, .product-card, .feature').forEach(el => {
     el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
     observer.observe(el);
 });
-const navToggle = document.getElementById("navToggle");
-const navMenu = document.getElementById("navMenu");
-
-navToggle.addEventListener("click", () => {
-    navMenu.classList.toggle("show");
-});
