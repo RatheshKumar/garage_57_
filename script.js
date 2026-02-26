@@ -1,21 +1,18 @@
-﻿// ══════════════════════════════════════
-// Fast2SMS OTP System (Free for India)
-// ══════════════════════════════════════
+﻿// ══════════════════════════════════════════════════════
+//  GARAGE J57 — script.js
+//  Works with Vercel API endpoint
+// ══════════════════════════════════════════════════════
 
-// 1. Go to fast2sms.com → Sign up → 
-//    Dashboard → Dev API → Copy API key
-const FAST2SMS_API_KEY = "K2BXSqkOp1I0wnGYojHdJmgVT9hLaPZNrzFyUtxDQfAilEbC6uraoRMCLPhZNekAy5xzXw98tHWOgGci";
+// ── API URL — works both locally and on Vercel ──
+const API_URL = "/api/otp";
 
-let generatedOTP = null;
+// ── State ──
 let timerInterval = null;
 let timerSeconds = 30;
 
-// ── Generate 6-digit OTP ──
-function generateOTP() {
-    return Math.floor(100000 + Math.random() * 900000).toString();
-}
-
-// ── Send OTP via Fast2SMS ──
+// ══════════════════════════════════════
+// STEP 1 — SEND OTP
+// ══════════════════════════════════════
 async function sendOTP() {
     clearError('error-phone');
 
@@ -25,81 +22,100 @@ async function sendOTP() {
         showError('error-phone', 'Please enter your phone number.');
         return;
     }
-
-    // Indian number validation (10 digits)
     if (!/^[6-9]\d{9}$/.test(phone)) {
-        showError('error-phone', 'Enter valid 10-digit Indian mobile number.');
+        showError('error-phone', 'Enter valid 10-digit number (e.g. 9047727963)');
         return;
     }
 
     setLoading('btn-send-otp', true, 'Sending...');
 
-    generatedOTP = generateOTP();
-
     try {
-        const response = await fetch(
-            `https://www.fast2sms.com/dev/bulkV2?authorization=${FAST2SMS_API_KEY}&variables_values=${generatedOTP}&route=otp&numbers=${phone}`,
-            { method: 'GET' }
-        );
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'send', phone })
+        });
 
         const data = await response.json();
 
-        if (data.return === true) {
-            // OTP sent successfully
+        if (data.success) {
             document.getElementById('step-phone').style.display = 'none';
             document.getElementById('step-otp').style.display = 'block';
             document.getElementById('display-phone').textContent = '+91 ' + phone;
             startTimer();
         } else {
-            showError('error-phone', 'Failed to send OTP. Check your API key.');
+            showError('error-phone', data.message || 'Failed to send OTP.');
         }
 
     } catch (error) {
         showError('error-phone', 'Network error. Please try again.');
-        console.error(error);
+        console.error('Send OTP error:', error);
     }
 
     setLoading('btn-send-otp', false, 'Send OTP');
 }
 
-// ── Verify OTP ──
-function verifyOTP() {
+// ══════════════════════════════════════
+// STEP 2 — VERIFY OTP
+// ══════════════════════════════════════
+async function verifyOTP() {
     clearError('error-otp');
 
-    const enteredOTP = document.getElementById('input-otp').value.trim();
+    const otp = document.getElementById('input-otp').value.trim();
+    const phone = document.getElementById('display-phone')
+        .textContent.replace('+91 ', '').trim();
 
-    if (!enteredOTP || enteredOTP.length !== 6) {
+    if (!otp || otp.length !== 6) {
         showError('error-otp', 'Please enter the 6-digit OTP.');
         return;
     }
 
-    if (enteredOTP === generatedOTP) {
-        // ✅ OTP correct
-        const phone = document.getElementById('display-phone').textContent;
-        document.getElementById('step-otp').style.display = 'none';
-        document.getElementById('step-success').style.display = 'block';
-        document.getElementById('success-phone').textContent = phone;
-        clearInterval(timerInterval);
-        saveUserToLocalStorage(phone);
-    } else {
-        // ❌ OTP wrong
-        showError('error-otp', 'Wrong OTP. Please try again.');
+    setLoading('btn-verify-otp', true, 'Verifying...');
+
+    try {
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'verify', phone, otp })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            clearInterval(timerInterval);
+            document.getElementById('step-otp').style.display = 'none';
+            document.getElementById('step-success').style.display = 'block';
+            document.getElementById('success-phone').textContent = '+91 ' + phone;
+            saveUser(phone);
+        } else {
+            showError('error-otp', data.message || 'Wrong OTP. Try again.');
+        }
+
+    } catch (error) {
+        showError('error-otp', 'Network error. Please try again.');
+        console.error('Verify OTP error:', error);
     }
+
+    setLoading('btn-verify-otp', false, 'Verify & Log In');
 }
 
-// ── Resend OTP ──
+// ══════════════════════════════════════
+// RESEND OTP
+// ══════════════════════════════════════
 function resendOTP() {
     clearError('error-otp');
-    document.getElementById('input-otp').value = '';
     const phone = document.getElementById('display-phone')
-        .textContent.replace('+91 ', '');
+        .textContent.replace('+91 ', '').trim();
     document.getElementById('input-phone').value = phone;
+    document.getElementById('input-otp').value = '';
     document.getElementById('step-otp').style.display = 'none';
     document.getElementById('step-phone').style.display = 'block';
     sendOTP();
 }
 
-// ── Go Back ──
+// ══════════════════════════════════════
+// GO BACK
+// ══════════════════════════════════════
 function goBack() {
     document.getElementById('step-otp').style.display = 'none';
     document.getElementById('step-phone').style.display = 'block';
@@ -108,22 +124,24 @@ function goBack() {
     clearError('error-phone');
     clearError('error-otp');
     clearInterval(timerInterval);
-    generatedOTP = null;
 }
 
-// ── Save user to LocalStorage (no backend needed) ──
-function saveUserToLocalStorage(phone) {
+// ══════════════════════════════════════
+// SAVE USER TO LOCALSTORAGE
+// ══════════════════════════════════════
+function saveUser(phone) {
     const users = JSON.parse(localStorage.getItem('gj57_users') || '[]');
     const exists = users.find(u => u.phone === phone);
     if (!exists) {
         users.push({ phone, joinedAt: new Date().toISOString() });
         localStorage.setItem('gj57_users', JSON.stringify(users));
-        console.log('New user saved:', phone);
     }
     localStorage.setItem('gj57_current_user', phone);
 }
 
-// ── Timer ──
+// ══════════════════════════════════════
+// TIMER
+// ══════════════════════════════════════
 function startTimer() {
     timerSeconds = 30;
     const timerEl = document.getElementById('timer');
@@ -142,7 +160,9 @@ function startTimer() {
     }, 1000);
 }
 
-// ── Helpers ──
+// ══════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════
 function showError(id, msg) {
     document.getElementById(id).textContent = msg;
 }
@@ -153,19 +173,17 @@ function setLoading(btnId, isLoading, label) {
     const btn = document.getElementById(btnId);
     btn.disabled = isLoading;
     btn.textContent = label;
-    isLoading
-        ? btn.classList.add('loading')
-        : btn.classList.remove('loading');
+    isLoading ? btn.classList.add('loading') : btn.classList.remove('loading');
 }
 
-// ── Enter key support ──
+// ══════════════════════════════════════
+// KEYBOARD SUPPORT
+// ══════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('input-phone')
         ?.addEventListener('keydown', e => { if (e.key === 'Enter') sendOTP(); });
     document.getElementById('input-otp')
         ?.addEventListener('keydown', e => { if (e.key === 'Enter') verifyOTP(); });
     document.getElementById('input-otp')
-        ?.addEventListener('input', e => {
-            if (e.target.value.length === 6) verifyOTP();
-        });
+        ?.addEventListener('input', e => { if (e.target.value.length === 6) verifyOTP(); });
 });
