@@ -4,77 +4,155 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Garage J57 – Log In</title>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@300;400;500&display=swap"
+          rel="stylesheet" />
+
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="style.css" />
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
-    <!-- NAV -->
+    <!-- ══════════════════════════════════════
+         NAV
+    ══════════════════════════════════════ -->
     <nav class="nav">
+
         <a href="#" class="nav__logo">
-
-            <!-- ✅ NAV LOGO -->
-            <img class="nav__logo-img logo-target"
+            <!-- ✅ NAV LOGO — place GARAGE_57.jpg in same folder -->
+            <img class="nav__logo-img"
                  src="GARAGE_57.jpg"
-                 alt="Garage J57" />
-
+                 alt="Garage J57"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block'" />
+            <span class="nav__logo-fallback">GARAGE J57</span>
         </a>
+
         <ul class="nav__links">
             <li><a href="#">Home</a></li>
             <li><a href="#">Contact</a></li>
             <li><a href="#">About</a></li>
             <li><a href="#">Cart</a></li>
         </ul>
+
     </nav>
 
-    <!-- LOGIN SECTION -->
+
+    <!-- ══════════════════════════════════════
+         LOGIN SECTION
+    ══════════════════════════════════════ -->
     <section class="login">
 
+        <!-- Left: Brand logo -->
         <div class="login__visual">
-
             <!-- ✅ HERO LOGO -->
-            <img class="login__logo logo-target"
+            <img class="login__logo"
                  src="GARAGE_57.jpg"
                  alt="Garage J57 Logo" />
-
         </div>
 
+        <!-- Right: Login form -->
         <div class="login__form-wrap">
             <h1 class="login__heading">Log in to Exclusive</h1>
             <p class="login__sub">Enter your details below</p>
 
-            <div class="form__group">
-                <input type="tel" placeholder="Phone Number" autocomplete="tel" inputmode="numeric" />
+            <!-- ── Step 1: Phone Number ── -->
+            <div id="step-phone">
+
+                <div class="form__group">
+                    <input id="input-phone"
+                           type="tel"
+                           placeholder="Phone Number (e.g. +91XXXXXXXXXX)"
+                           autocomplete="tel"
+                           inputmode="numeric" />
+                </div>
+
+                <p class="form__error" id="error-phone"></p>
+
+                <!-- reCAPTCHA renders here invisibly -->
+                <div id="recaptcha-container"></div>
+
+                <button class="btn-login" id="btn-send-otp" type="button" onclick="sendOTP()">
+                    Send OTP
+                </button>
+
             </div>
 
-            <div class="form__group">
-                <input type="text" placeholder="OTP" autocomplete="one-time-code" inputmode="numeric" maxlength="6" />
+            <!-- ── Step 2: OTP Verification (hidden initially) ── -->
+            <div id="step-otp" style="display:none;">
+
+                <p class="otp-info">OTP sent to <span id="display-phone"></span></p>
+
+                <div class="form__group">
+                    <input id="input-otp"
+                           type="text"
+                           placeholder="Enter 6-digit OTP"
+                           inputmode="numeric"
+                           maxlength="6" />
+                </div>
+
+                <p class="form__error" id="error-otp"></p>
+
+                <div class="otp-actions">
+                    <button class="btn-login" id="btn-verify-otp" type="button" onclick="verifyOTP()">
+                        Verify &amp; Log In
+                    </button>
+                    <button class="btn-resend" id="btn-resend" type="button" onclick="resendOTP()">
+                        Resend OTP (<span id="timer">30</span>s)
+                    </button>
+                </div>
+
+                <button class="btn-back" type="button" onclick="goBack()">
+                    ← Change Number
+                </button>
+
             </div>
 
-            <button class="btn-login" type="button">Log In</button>
+            <!-- ── Success message (hidden initially) ── -->
+            <div id="step-success" style="display:none;">
+                <div class="success-box">
+                    <div class="success-icon">✓</div>
+                    <h2 class="success-title">Welcome!</h2>
+                    <p class="success-msg">You are now logged in.</p>
+                    <p class="success-phone" id="success-phone"></p>
+                    <button class="btn-login" onclick="window.location.href='dashboard.html'">
+                        Go to Dashboard
+                    </button>
+                </div>
+            </div>
+
         </div>
-
     </section>
 
-    <!-- FOOTER -->
+
+    <!-- ══════════════════════════════════════
+         FOOTER
+    ══════════════════════════════════════ -->
     <footer class="footer">
+
         <div class="footer__grid">
 
+            <!-- Col 1: Brand + Subscribe -->
             <div class="footer__col">
-
                 <!-- ✅ FOOTER LOGO -->
-                <img class="footer__brand-logo logo-target"
+                <img class="footer__brand-logo"
                      src="GARAGE_57.jpg"
-                     alt="Garage J57" />
-
+                     alt="Garage J57"
+                     onerror="this.style.display='none'" />
                 <p class="footer__subscribe-label">Subscribe</p>
                 <p class="footer__subscribe-desc">Get 10% off your first order</p>
                 <div class="subscribe-form">
                     <input type="email" placeholder="Enter your email" />
-                    <button type="button">&#x2192;</button>
+                    <button type="button" aria-label="Subscribe">&#x2192;</button>
                 </div>
             </div>
 
+            <!-- Col 2: Account -->
             <div class="footer__col">
                 <h3 class="footer__col-title">Account</h3>
                 <ul class="footer__links">
@@ -86,6 +164,7 @@
                 </ul>
             </div>
 
+            <!-- Col 3: Quick Link -->
             <div class="footer__col">
                 <h3 class="footer__col-title">Quick Link</h3>
                 <ul class="footer__links">
@@ -96,6 +175,7 @@
                 </ul>
             </div>
 
+            <!-- Col 4: Location -->
             <div class="footer__col">
                 <h3 class="footer__col-title">Location</h3>
                 <div class="footer__map">Map</div>
@@ -106,8 +186,11 @@
         <div class="footer__bottom">
             &copy; Copyright Rimel 2022. All rights reserved
         </div>
+
     </footer>
 
+
+    <!-- JavaScript -->
     <script src="script.js"></script>
 
 </body>
