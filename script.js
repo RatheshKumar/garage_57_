@@ -1,241 +1,105 @@
-﻿// ══════════════════════════════════════════════════════
-//  GARAGE J57 — script.js
-//  Firebase Phone OTP Authentication + Firestore DB
-// ══════════════════════════════════════════════════════
+﻿// ══════════════════════════════════════
+// Fast2SMS OTP System (Free for India)
+// ══════════════════════════════════════
 
-// ──────────────────────────────────────────────────────
-// 1. FIREBASE CONFIGURATION
-//    ⚠️  Replace ALL values below with YOUR Firebase
-//    project credentials from:
-//    Firebase Console → Project Settings → Your Apps
-// ──────────────────────────────────────────────────────
-const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
-};
+// 1. Go to fast2sms.com → Sign up → 
+//    Dashboard → Dev API → Copy API key
+const FAST2SMS_API_KEY = "K2BXSqkOp1I0wnGYojHdJmgVT9hLaPZNrzFyUtxDQfAilEbC6uraoRMCLPhZNekAy5xzXw98tHWOgGci";
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
+let generatedOTP = null;
+let timerInterval = null;
+let timerSeconds = 30;
 
-// ──────────────────────────────────────────────────────
-// 2. STATE VARIABLES
-// ──────────────────────────────────────────────────────
-let confirmationResult = null;   // Firebase OTP result object
-let timerInterval = null;   // Countdown interval reference
-let timerSeconds = 30;     // OTP resend countdown
-
-// ──────────────────────────────────────────────────────
-// 3. HELPER FUNCTIONS
-// ──────────────────────────────────────────────────────
-
-// Show an error message under a form field
-function showError(elementId, message) {
-    document.getElementById(elementId).textContent = message;
+// ── Generate 6-digit OTP ──
+function generateOTP() {
+    return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
-// Clear an error message
-function clearError(elementId) {
-    document.getElementById(elementId).textContent = '';
-}
-
-// Set a button to loading state
-function setLoading(buttonId, isLoading, label) {
-    const btn = document.getElementById(buttonId);
-    if (isLoading) {
-        btn.classList.add('loading');
-        btn.disabled = true;
-        btn.textContent = label || 'Please wait...';
-    } else {
-        btn.classList.remove('loading');
-        btn.disabled = false;
-        btn.textContent = label;
-    }
-}
-
-// Start the resend OTP countdown timer
-function startTimer() {
-    timerSeconds = 30;
-    const timerEl = document.getElementById('timer');
-    const resendBtn = document.getElementById('btn-resend');
-
-    resendBtn.classList.remove('active');
-    resendBtn.disabled = true;
-
-    clearInterval(timerInterval);
-
-    timerInterval = setInterval(() => {
-        timerSeconds--;
-        timerEl.textContent = timerSeconds;
-
-        if (timerSeconds <= 0) {
-            clearInterval(timerInterval);
-            resendBtn.classList.add('active');
-            resendBtn.disabled = false;
-            timerEl.textContent = '0';
-        }
-    }, 1000);
-}
-
-// Validate phone number (E.164 format: +91XXXXXXXXXX)
-function isValidPhone(phone) {
-    return /^\+[1-9]\d{9,14}$/.test(phone);
-}
-
-// ──────────────────────────────────────────────────────
-// 4. STEP 1 — SEND OTP
-// ──────────────────────────────────────────────────────
-function sendOTP() {
+// ── Send OTP via Fast2SMS ──
+async function sendOTP() {
     clearError('error-phone');
 
     const phone = document.getElementById('input-phone').value.trim();
 
-    // Validate phone
     if (!phone) {
         showError('error-phone', 'Please enter your phone number.');
         return;
     }
-    if (!isValidPhone(phone)) {
-        showError('error-phone', 'Use international format: +91XXXXXXXXXX');
+
+    // Indian number validation (10 digits)
+    if (!/^[6-9]\d{9}$/.test(phone)) {
+        showError('error-phone', 'Enter valid 10-digit Indian mobile number.');
         return;
     }
 
     setLoading('btn-send-otp', true, 'Sending...');
 
-    // Setup invisible reCAPTCHA (required by Firebase)
-    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
-        'recaptcha-container',
-        { size: 'invisible' }
-    );
+    generatedOTP = generateOTP();
 
-    // Send OTP via Firebase
-    auth.signInWithPhoneNumber(phone, window.recaptchaVerifier)
-        .then((result) => {
-            confirmationResult = result;
+    try {
+        const response = await fetch(
+            `https://www.fast2sms.com/dev/bulkV2?authorization=${FAST2SMS_API_KEY}&variables_values=${generatedOTP}&route=otp&numbers=${phone}`,
+            { method: 'GET' }
+        );
 
-            // Show OTP step
+        const data = await response.json();
+
+        if (data.return === true) {
+            // OTP sent successfully
             document.getElementById('step-phone').style.display = 'none';
             document.getElementById('step-otp').style.display = 'block';
-            document.getElementById('display-phone').textContent = phone;
-
+            document.getElementById('display-phone').textContent = '+91 ' + phone;
             startTimer();
-            setLoading('btn-send-otp', false, 'Send OTP');
-        })
-        .catch((error) => {
-            console.error('OTP send error:', error);
-            setLoading('btn-send-otp', false, 'Send OTP');
+        } else {
+            showError('error-phone', 'Failed to send OTP. Check your API key.');
+        }
 
-            // Handle specific Firebase errors
-            switch (error.code) {
-                case 'auth/invalid-phone-number':
-                    showError('error-phone', 'Invalid phone number format.');
-                    break;
-                case 'auth/too-many-requests':
-                    showError('error-phone', 'Too many attempts. Please try again later.');
-                    break;
-                default:
-                    showError('error-phone', 'Failed to send OTP. Please try again.');
-            }
+    } catch (error) {
+        showError('error-phone', 'Network error. Please try again.');
+        console.error(error);
+    }
 
-            // Reset reCAPTCHA on error
-            if (window.recaptchaVerifier) {
-                window.recaptchaVerifier.clear();
-                window.recaptchaVerifier = null;
-            }
-        });
+    setLoading('btn-send-otp', false, 'Send OTP');
 }
 
-// ──────────────────────────────────────────────────────
-// 5. STEP 2 — VERIFY OTP
-// ──────────────────────────────────────────────────────
+// ── Verify OTP ──
 function verifyOTP() {
     clearError('error-otp');
 
-    const otp = document.getElementById('input-otp').value.trim();
+    const enteredOTP = document.getElementById('input-otp').value.trim();
 
-    if (!otp || otp.length !== 6) {
+    if (!enteredOTP || enteredOTP.length !== 6) {
         showError('error-otp', 'Please enter the 6-digit OTP.');
         return;
     }
 
-    if (!confirmationResult) {
-        showError('error-otp', 'Session expired. Please go back and try again.');
-        return;
+    if (enteredOTP === generatedOTP) {
+        // ✅ OTP correct
+        const phone = document.getElementById('display-phone').textContent;
+        document.getElementById('step-otp').style.display = 'none';
+        document.getElementById('step-success').style.display = 'block';
+        document.getElementById('success-phone').textContent = phone;
+        clearInterval(timerInterval);
+        saveUserToLocalStorage(phone);
+    } else {
+        // ❌ OTP wrong
+        showError('error-otp', 'Wrong OTP. Please try again.');
     }
-
-    setLoading('btn-verify-otp', true, 'Verifying...');
-
-    confirmationResult.confirm(otp)
-        .then((result) => {
-            const user = result.user;
-
-            // Save or update user in Firestore
-            saveUserToDatabase(user);
-
-            // Show success step
-            document.getElementById('step-otp').style.display = 'none';
-            document.getElementById('step-success').style.display = 'block';
-            document.getElementById('success-phone').textContent = user.phoneNumber;
-
-            clearInterval(timerInterval);
-            setLoading('btn-verify-otp', false, 'Verify & Log In');
-        })
-        .catch((error) => {
-            console.error('OTP verify error:', error);
-            setLoading('btn-verify-otp', false, 'Verify & Log In');
-
-            switch (error.code) {
-                case 'auth/invalid-verification-code':
-                    showError('error-otp', 'Wrong OTP. Please check and try again.');
-                    break;
-                case 'auth/code-expired':
-                    showError('error-otp', 'OTP expired. Please resend.');
-                    break;
-                default:
-                    showError('error-otp', 'Verification failed. Please try again.');
-            }
-        });
 }
 
-// ──────────────────────────────────────────────────────
-// 6. RESEND OTP
-// ──────────────────────────────────────────────────────
+// ── Resend OTP ──
 function resendOTP() {
     clearError('error-otp');
-
-    const phone = document.getElementById('display-phone').textContent;
-
-    // Reset reCAPTCHA
-    if (window.recaptchaVerifier) {
-        window.recaptchaVerifier.clear();
-        window.recaptchaVerifier = null;
-    }
-
-    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
-        'recaptcha-container',
-        { size: 'invisible' }
-    );
-
-    auth.signInWithPhoneNumber(phone, window.recaptchaVerifier)
-        .then((result) => {
-            confirmationResult = result;
-            startTimer();
-            document.getElementById('input-otp').value = '';
-        })
-        .catch((error) => {
-            console.error('Resend OTP error:', error);
-            showError('error-otp', 'Failed to resend OTP. Please try again.');
-        });
+    document.getElementById('input-otp').value = '';
+    const phone = document.getElementById('display-phone')
+        .textContent.replace('+91 ', '');
+    document.getElementById('input-phone').value = phone;
+    document.getElementById('step-otp').style.display = 'none';
+    document.getElementById('step-phone').style.display = 'block';
+    sendOTP();
 }
 
-// ──────────────────────────────────────────────────────
-// 7. GO BACK (Change Number)
-// ──────────────────────────────────────────────────────
+// ── Go Back ──
 function goBack() {
     document.getElementById('step-otp').style.display = 'none';
     document.getElementById('step-phone').style.display = 'block';
@@ -244,82 +108,64 @@ function goBack() {
     clearError('error-phone');
     clearError('error-otp');
     clearInterval(timerInterval);
-    confirmationResult = null;
-
-    if (window.recaptchaVerifier) {
-        window.recaptchaVerifier.clear();
-        window.recaptchaVerifier = null;
-    }
+    generatedOTP = null;
 }
 
-// ──────────────────────────────────────────────────────
-// 8. SAVE USER TO FIRESTORE DATABASE
-//    Creates a new user record on first login,
-//    or updates lastLogin on subsequent logins.
-// ──────────────────────────────────────────────────────
-function saveUserToDatabase(user) {
-    const userRef = db.collection('users').doc(user.uid);
-
-    userRef.get()
-        .then((doc) => {
-            if (doc.exists) {
-                // Existing user — update last login time
-                userRef.update({
-                    lastLogin: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                console.log('Existing user logged in:', user.phoneNumber);
-            } else {
-                // New user — create full record
-                userRef.set({
-                    uid: user.uid,
-                    phone: user.phoneNumber,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
-                    isActive: true
-                });
-                console.log('New user created:', user.phoneNumber);
-            }
-        })
-        .catch((error) => {
-            console.error('Firestore error:', error);
-        });
+// ── Save user to LocalStorage (no backend needed) ──
+function saveUserToLocalStorage(phone) {
+    const users = JSON.parse(localStorage.getItem('gj57_users') || '[]');
+    const exists = users.find(u => u.phone === phone);
+    if (!exists) {
+        users.push({ phone, joinedAt: new Date().toISOString() });
+        localStorage.setItem('gj57_users', JSON.stringify(users));
+        console.log('New user saved:', phone);
+    }
+    localStorage.setItem('gj57_current_user', phone);
 }
 
-// ──────────────────────────────────────────────────────
-// 9. AUTH STATE OBSERVER
-//    Detects if user is already logged in on page load.
-// ──────────────────────────────────────────────────────
-auth.onAuthStateChanged((user) => {
-    if (user) {
-        console.log('User already logged in:', user.phoneNumber);
-        // Optional: auto-redirect if already logged in
-        // window.location.href = 'dashboard.html';
-    } else {
-        console.log('No user logged in.');
-    }
-});
+// ── Timer ──
+function startTimer() {
+    timerSeconds = 30;
+    const timerEl = document.getElementById('timer');
+    const resendBtn = document.getElementById('btn-resend');
+    resendBtn.classList.remove('active');
+    resendBtn.disabled = true;
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+        timerSeconds--;
+        timerEl.textContent = timerSeconds;
+        if (timerSeconds <= 0) {
+            clearInterval(timerInterval);
+            resendBtn.classList.add('active');
+            resendBtn.disabled = false;
+        }
+    }, 1000);
+}
 
-// ──────────────────────────────────────────────────────
-// 10. ALLOW PRESSING ENTER KEY ON INPUTS
-// ──────────────────────────────────────────────────────
+// ── Helpers ──
+function showError(id, msg) {
+    document.getElementById(id).textContent = msg;
+}
+function clearError(id) {
+    document.getElementById(id).textContent = '';
+}
+function setLoading(btnId, isLoading, label) {
+    const btn = document.getElementById(btnId);
+    btn.disabled = isLoading;
+    btn.textContent = label;
+    isLoading
+        ? btn.classList.add('loading')
+        : btn.classList.remove('loading');
+}
+
+// ── Enter key support ──
 document.addEventListener('DOMContentLoaded', () => {
-    const phoneInput = document.getElementById('input-phone');
-    const otpInput = document.getElementById('input-otp');
-
-    if (phoneInput) {
-        phoneInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') sendOTP();
+    document.getElementById('input-phone')
+        ?.addEventListener('keydown', e => { if (e.key === 'Enter') sendOTP(); });
+    document.getElementById('input-otp')
+        ?.addEventListener('keydown', e => { if (e.key === 'Enter') verifyOTP(); });
+    document.getElementById('input-otp')
+        ?.addEventListener('input', e => {
+            if (e.target.value.length === 6) verifyOTP();
         });
-    }
-
-    if (otpInput) {
-        otpInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') verifyOTP();
-        });
-
-        // Auto-verify when 6 digits are entered
-        otpInput.addEventListener('input', () => {
-            if (otpInput.value.length === 6) verifyOTP();
-        });
-    }
 });
