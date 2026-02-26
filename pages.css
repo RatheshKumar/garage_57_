@@ -1,0 +1,704 @@
+﻿/* ══════════════════════════════════════════
+   GARAGE J57 — PAGES STYLESHEET
+   pages.css (imported by all inner pages)
+══════════════════════════════════════════ */
+
+/* ──────────────────────────────────────
+   PAGE HEADER BANNER
+────────────────────────────────────── */
+.page-header {
+    background: var(--black);
+    padding: 52px var(--pad-side);
+    border-bottom: 3px solid var(--red);
+}
+
+.page-header__content {
+    max-width: 600px;
+}
+
+.page-header__tag {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 10px;
+}
+
+.page-header__title {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 900;
+    color: var(--white);
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+}
+
+.page-header__breadcrumb {
+    font-size: 13px;
+    color: #666;
+}
+
+    .page-header__breadcrumb a {
+        color: #999;
+        transition: color 0.2s;
+    }
+
+        .page-header__breadcrumb a:hover {
+            color: var(--red);
+        }
+
+/* ──────────────────────────────────────
+   SHOP LAYOUT
+────────────────────────────────────── */
+.shop-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 40px;
+    padding: 48px var(--pad-side);
+    align-items: start;
+}
+
+/* Sidebar */
+.shop-sidebar {
+    position: sticky;
+    top: calc(var(--nav-h) + 20px);
+}
+
+.filter-group {
+    margin-bottom: 32px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--gray-border);
+}
+
+    .filter-group:last-of-type {
+        border-bottom: none;
+    }
+
+.filter-group__title {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--black);
+    margin-bottom: 16px;
+}
+
+.filter-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+    .filter-list label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        color: var(--black);
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+
+        .filter-list label:hover {
+            color: var(--red);
+        }
+
+    .filter-list input[type="checkbox"],
+    .filter-list input[type="radio"] {
+        accent-color: var(--red);
+        width: 15px;
+        height: 15px;
+        cursor: pointer;
+    }
+
+    .filter-list span {
+        margin-left: auto;
+        font-size: 12px;
+        color: var(--gray-text);
+    }
+
+/* Price Range */
+.price-range input[type="range"] {
+    width: 100%;
+    accent-color: var(--red);
+    margin-bottom: 10px;
+}
+
+.price-range__labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--gray-text);
+}
+
+/* Toolbar */
+.shop-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--gray-border);
+}
+
+.shop-toolbar__count {
+    font-size: 14px;
+    color: var(--gray-text);
+}
+
+.shop-toolbar__sort {
+    font-family: var(--font-body);
+    font-size: 14px;
+    padding: 8px 14px;
+    border: 1.5px solid var(--gray-border);
+    background: var(--white);
+    color: var(--black);
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+    .shop-toolbar__sort:focus {
+        border-color: var(--red);
+    }
+
+/* 4-column products grid */
+.products--4col {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 48px;
+}
+
+.pagination__btn {
+    width: 40px;
+    height: 40px;
+    border: 1.5px solid var(--gray-border);
+    background: var(--white);
+    color: var(--black);
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+    .pagination__btn:hover,
+    .pagination__btn.active {
+        background: var(--red);
+        border-color: var(--red);
+        color: var(--white);
+    }
+
+.pagination__next {
+    width: auto;
+    padding: 0 20px;
+}
+
+/* ──────────────────────────────────────
+   PRODUCT SPEC LINE
+────────────────────────────────────── */
+.product-card__spec {
+    font-size: 12px;
+    color: var(--gray-text);
+    margin-bottom: 8px;
+    font-style: italic;
+}
+
+/* ──────────────────────────────────────
+   TRACK TYRES HERO
+────────────────────────────────────── */
+.track-hero {
+    background: var(--black);
+    min-height: 420px;
+    display: flex;
+    align-items: center;
+    padding: 80px var(--pad-side);
+    position: relative;
+    overflow: hidden;
+    border-bottom: 3px solid var(--red);
+}
+
+.track-hero__content {
+    position: relative;
+    z-index: 2;
+}
+
+.track-hero__title {
+    font-family: var(--font-display);
+    font-size: clamp(56px, 8vw, 110px);
+    font-weight: 900;
+    color: var(--white);
+    letter-spacing: -0.03em;
+    line-height: 0.9;
+    margin: 12px 0 20px;
+}
+
+.track-hero__sub {
+    font-size: 16px;
+    color: #999;
+    max-width: 500px;
+    line-height: 1.7;
+    margin-bottom: 36px;
+}
+
+.track-hero__gears {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+}
+
+.track-gear {
+    font-size: 300px;
+    color: rgba(192,57,43,0.07);
+    animation: spin-slow 25s linear infinite;
+    line-height: 1;
+    position: absolute;
+    right: -60px;
+}
+
+.track-gear--2 {
+    font-size: 180px;
+    right: 220px;
+    animation-direction: reverse;
+    color: rgba(255,255,255,0.04);
+}
+
+/* Tyre Guide */
+.tyre-guide {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+
+.tyre-guide__card {
+    padding: 32px 24px;
+    border: 1.5px solid var(--gray-border);
+    transition: border-color 0.2s, transform 0.2s;
+}
+
+    .tyre-guide__card:hover {
+        border-color: var(--red);
+        transform: translateY(-4px);
+    }
+
+.tyre-guide__num {
+    font-family: var(--font-display);
+    font-size: 52px;
+    font-weight: 900;
+    color: var(--red);
+    opacity: 0.3;
+    line-height: 1;
+    margin-bottom: 12px;
+}
+
+.tyre-guide__card h3 {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 10px;
+}
+
+.tyre-guide__card p {
+    font-size: 14px;
+    color: var(--gray-text);
+    line-height: 1.7;
+}
+
+/* ──────────────────────────────────────
+   ABOUT PAGE
+────────────────────────────────────── */
+.about-story {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+}
+
+.about-story__visual {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.about-logo {
+    width: 100%;
+    max-width: 400px;
+    filter: drop-shadow(0 20px 60px rgba(192,57,43,0.2));
+}
+
+.about-story__badge {
+    position: absolute;
+    bottom: -10px;
+    right: 20px;
+    background: var(--red);
+    color: var(--white);
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 900;
+    padding: 10px 24px;
+    letter-spacing: 0.1em;
+}
+
+.about-story__title {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 900;
+    color: var(--black);
+    line-height: 1.05;
+    margin: 10px 0 20px;
+    letter-spacing: -0.01em;
+}
+
+.about-story__text p {
+    font-size: 15px;
+    color: var(--gray-text);
+    line-height: 1.8;
+    margin-bottom: 16px;
+}
+
+/* Stats bar */
+.about-stats {
+    background: var(--black);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 0;
+}
+
+.about-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    border-right: 1px solid #222;
+    text-align: center;
+}
+
+    .about-stat:last-child {
+        border-right: none;
+    }
+
+.about-stat__num {
+    font-family: var(--font-display);
+    font-size: 52px;
+    font-weight: 900;
+    color: var(--red);
+    line-height: 1;
+    margin-bottom: 6px;
+}
+
+.about-stat__label {
+    font-size: 13px;
+    color: #666;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* Team */
+.team {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+
+.team-card {
+    background: var(--white);
+    border: 1.5px solid var(--gray-border);
+    padding: 36px 24px;
+    text-align: center;
+    transition: border-color 0.2s, transform 0.2s;
+}
+
+    .team-card:hover {
+        border-color: var(--red);
+        transform: translateY(-4px);
+    }
+
+.team-card__avatar {
+    font-size: 52px;
+    margin-bottom: 16px;
+}
+
+.team-card__name {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 4px;
+}
+
+.team-card__role {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 12px;
+}
+
+.team-card__bio {
+    font-size: 13px;
+    color: var(--gray-text);
+    line-height: 1.7;
+}
+
+/* ──────────────────────────────────────
+   CONTACT PAGE
+────────────────────────────────────── */
+.contact-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 80px;
+    align-items: start;
+}
+
+.contact-info__title {
+    font-family: var(--font-display);
+    font-size: 40px;
+    font-weight: 900;
+    color: var(--black);
+    margin-bottom: 10px;
+}
+
+.contact-info__sub {
+    font-size: 14px;
+    color: var(--gray-text);
+    line-height: 1.7;
+    margin-bottom: 36px;
+}
+
+.contact-item {
+    display: flex;
+    gap: 18px;
+    margin-bottom: 28px;
+}
+
+.contact-item__icon {
+    font-size: 24px;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    background: var(--gray-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contact-item h4 {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--black);
+    margin-bottom: 4px;
+}
+
+.contact-item p {
+    font-size: 14px;
+    color: var(--gray-text);
+    line-height: 1.6;
+}
+
+.contact-socials {
+    display: flex;
+    gap: 12px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+}
+
+.contact-social {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1.5px solid var(--gray-border);
+    padding: 8px 16px;
+    color: var(--black);
+    transition: all 0.2s;
+}
+
+    .contact-social:hover {
+        border-color: var(--red);
+        color: var(--red);
+    }
+
+/* Contact form */
+.contact-form-wrap__title {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 28px;
+}
+
+.cform__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.cform__group {
+    margin-bottom: 20px;
+}
+
+    .cform__group label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--black);
+        margin-bottom: 8px;
+    }
+
+    .cform__group input,
+    .cform__group select,
+    .cform__group textarea {
+        width: 100%;
+        border: 1.5px solid var(--gray-border);
+        padding: 12px 14px;
+        font-family: var(--font-body);
+        font-size: 14px;
+        color: var(--black);
+        background: var(--white);
+        outline: none;
+        transition: border-color 0.25s;
+        resize: vertical;
+    }
+
+        .cform__group input:focus,
+        .cform__group select:focus,
+        .cform__group textarea:focus {
+            border-color: var(--red);
+        }
+
+        .cform__group input::placeholder,
+        .cform__group textarea::placeholder {
+            color: var(--gray-text);
+        }
+
+.cform__success {
+    margin-top: 16px;
+    color: #27ae60;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* Contact map */
+.contact-map {
+    height: 300px;
+    background: var(--black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 3px solid var(--red);
+}
+
+.contact-map__placeholder {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    color: #444;
+    letter-spacing: 0.1em;
+}
+
+/* ──────────────────────────────────────
+   RESPONSIVE
+────────────────────────────────────── */
+@media (max-width: 1100px) {
+    .shop-layout {
+        grid-template-columns: 200px 1fr;
+    }
+
+    .products--4col {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .tyre-guide {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .team {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .about-story {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .about-story__visual {
+        justify-content: center;
+    }
+
+    .about-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .about-stat {
+        border-bottom: 1px solid #222;
+    }
+
+    .contact-layout {
+        grid-template-columns: 1fr;
+        gap: 48px;
+    }
+}
+
+@media (max-width: 768px) {
+    .shop-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .shop-sidebar {
+        position: static;
+    }
+
+    .products--4col {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .tyre-guide {
+        grid-template-columns: 1fr;
+    }
+
+    .team {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .about-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .cform__row {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .products--4col {
+        grid-template-columns: 1fr;
+    }
+
+    .team {
+        grid-template-columns: 1fr;
+    }
+}
